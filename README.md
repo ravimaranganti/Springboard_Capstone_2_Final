@@ -54,3 +54,45 @@ def mfcc(samples,sample_rate):
  <p align="center"> <b> Mel Spectrograms of Randomly Selected audiofiles labeled 'yes' </b> </p>
 <br>
 <br>
+
+## Models: 
+### Light-CNN: 
+I started out with a very simple CNN architecture and used log spectrograms as input. 
+~~~
+input_shape = (99, 81, 1)
+nclass = 12
+inp = Input(shape=input_shape)
+norm_inp = BatchNormalization()(inp)
+img_1 = Convolution2D(8, kernel_size=2, activation=activations.relu)(norm_inp)
+img_1 = Convolution2D(8, kernel_size=2, activation=activations.relu)(img_1)
+img_1 = MaxPooling2D(pool_size=(2, 2))(img_1)
+img_1 = Dropout(rate=0.2)(img_1)
+img_1 = Convolution2D(16, kernel_size=3, activation=activations.relu)(img_1)
+img_1 = Convolution2D(16, kernel_size=3, activation=activations.relu)(img_1)
+img_1 = MaxPooling2D(pool_size=(2, 2))(img_1)
+img_1 = Dropout(rate=0.2)(img_1)
+img_1 = Convolution2D(32, kernel_size=3, activation=activations.relu)(img_1)
+img_1 = MaxPooling2D(pool_size=(2, 2))(img_1)
+img_1 = Dropout(rate=0.2)(img_1)
+img_1 = Flatten()(img_1)
+
+dense_1 = BatchNormalization()(Dense(128, activation=activations.relu)(img_1))
+dense_1 = BatchNormalization()(Dense(128, activation=activations.relu)(dense_1))
+dense_1 = Dense(nclass, activation=activations.softmax)(dense_1)
+
+model = models.Model(inputs=inp, outputs=dense_1)
+opt = optimizers.Adam()
+callbacks = [EarlyStopping(monitor='val_acc', patience=4, verbose=1, mode='max')]
+model.compile(optimizer=opt, loss=losses.binary_crossentropy)
+model.summary()
+
+#x_train, x_valid, y_train, y_valid = train_test_split(x_train, y_train, test_size=0.1, random_state=2017)
+history=model.fit_generator(generator=generator(train_file_map,batch_size=250, mode='train'),steps_per_epoch=int(np.ceil(len(sample_map_df_train)/250)), validation_data=generator(train_file_map,batch_size=250, mode='val'), validation_steps=int(np.ceil(len(sample_map_df_val)/250)), epochs=3, shuffle=True, callbacks=callbacks)
+
+model.save(os.path.join(model_path, 'light_cnn.model'))
+~~~
+During training, I achieved high accuracies on the validation set using this light cnn model but this accuracy did not translate to good performance on the hold out test set at kaggle. When I read the forums to understand why this may be, it was suggested that the test set may be from a different distribution especially when it came to unknown uknowns. For instance, here is the confusion matrix on the validation set which I got during training. 
+![Image of Confusion Matrix](https://github.com/ravimaranganti/Springboard_Capstone_2_Final/blob/master/images/confusion_matrix_validation_lightcnn.png)
+<p align="center"> <b> Confusion Matrix on Validation Set: Light CNN </b> </p>
+<br>
+<br>
