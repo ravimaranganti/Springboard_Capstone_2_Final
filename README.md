@@ -50,6 +50,7 @@ def mfcc(samples,sample_rate):
     mfcc = librosa.feature.mfcc(S=log_S, n_mfcc=13)
     return mfcc
  ~~~ 
-
-## Models
-I started out with a simple CNN architecture. 
+![Image of Mel Spec](https://github.com/ravimaranganti/Springboard_Capstone_2_Final/blob/master/images/melspec_yes.png)
+ <p align="center"> <b> Mel Spectrograms of Randomly Selected audiofiles labeled 'yes' </b> </p>
+<br>
+<br>
