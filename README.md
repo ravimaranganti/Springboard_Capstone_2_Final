@@ -174,6 +174,6 @@ class ResNet():
         return self.m
    ~~~
 <br>
-
+<br>
 ![Image of Confusion Matrix]
 (https://github.com/ravimaranganti/Springboard_Capstone_2_Final/blob/master/images/ResidualBlock.png)
