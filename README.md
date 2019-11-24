@@ -175,3 +175,4 @@ class ResNet():
    ~~~
 <br>
 <br>
+With a Resnet architecture, I was able to generalize much better on the test set. In order to improve generalization, I used an ensemble of three models and took a majority vote. This resulted in a score of 0.87 on the public leaderboard. 
