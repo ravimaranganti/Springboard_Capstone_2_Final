@@ -175,4 +175,5 @@ class ResNet():
    ~~~
 <br>
 
-![Image of Confusion Matrix](https://github.com/ravimaranganti/Springboard_Capstone_2_Final/blob/master/images/confusion_matrix_validation_lightcnn.png)
+![Image of Confusion Matrix]
+(https://github.com/ravimaranganti/Springboard_Capstone_2_Final/blob/master/images/ResidualBlock.png)
